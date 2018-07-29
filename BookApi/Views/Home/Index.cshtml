@@ -1,0 +1,82 @@
+﻿<br />
+
+<div class="input-group" id="txt">
+    <span class="input-group-addon">Kitap Adı:</span>
+    <input id="msg" type="text" class="form-control" name="src" placeholder="Kitap arama">
+    <button type="button" onclick="Search()" class="btn btn-info">Ara</button>
+</div>
+
+<br />
+<div class="container">
+    <table class="table table-hover" hidden="hidden" id="datac">
+        <thead>
+            <tr>
+                <th>Yazar</th>
+                <th> KitapAdı</th>
+                <th>Kategorisi</th>
+                <th>Konusu</th>
+                <th>Sayfa Sayısı</th>
+                <th>Dili</th>
+                <th>Yayınlanma Tarihi</th>
+                <th>Yayın evi</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+
+
+
+@section js{
+
+    <script src="~/Scripts/jquery-paginate.min.js"></script>
+    <script src="~/Scripts/jquery-paginate.js"></script>
+    <link href="~/Content/pagiX.css" rel="stylesheet" />
+}
+
+<script>
+
+    function Search() {
+        var rl = "https://www.googleapis.com/books/v1/volumes?q=" + $("#msg").val();
+        $.ajax({
+            url: rl,
+            headers: { "key": "AIzaSyCInHiOCgun0ohlrtK_J6wSPwEWWHWtMwg " },
+            type: "GET",
+            dataType: "Json",
+            success: function (data) {
+                $("table tbody tr").remove();
+                $("table").removeAttr("hidden");
+                var html = "<tr>";
+                $.each(data.items, function (key, xd) {
+                    var authors;
+                    for (i in xd.volumeInfo.authors) {
+
+                        authors = xd.volumeInfo.authors[i] + "  ";
+                    }
+                    var cat;
+                    for (a in xd.volumeInfo.categories) {
+                        cat = xd.volumeInfo.categories[i] + " ";
+                    }
+
+                    html += "<td>" + authors + "</td>" + "<td><a href='" + xd.volumeInfo.infoLink + "'>" + xd.volumeInfo.title + '</a></td> <td>' + cat + '</td> <td>' + xd.volumeInfo.title + '</td> <td>' + xd.volumeInfo.pageCount + '</td> <td>' + xd.volumeInfo.language + '</td> <td>' + xd.volumeInfo.publishedDate + '</td> <td>' + xd.volumeInfo.publisher + '</td>' + "</tr>";
+                    $("table tbody").append(html);
+
+                })
+
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        })
+
+    }
+
+    $(document).ajaxSuccess(function () {
+        $('#datac').paginate({ limit: 10 });
+        $('.page-navigation li').addClass("page-item");
+        $('.page-navigation a').addClass("page-link");
+
+    });
+</script>
+

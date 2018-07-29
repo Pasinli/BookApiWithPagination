@@ -1,0 +1,21 @@
+﻿.page-navigation a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+}
+
+    /* Style the active/current link */
+    .page-navigation a.active {
+        background-color: dodgerblue;
+        color: white;
+    }
+
+    /* Add a grey background color on mouse-over */
+    .page-navigation a:hover:not(.active) {
+        background-color: #ddd;
+    }
+.page-navigation a[data-selected] {
+    background-color: #3d9be0;
+}
