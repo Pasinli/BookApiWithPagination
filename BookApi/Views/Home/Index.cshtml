@@ -45,6 +45,8 @@
             type: "GET",
             dataType: "Json",
             success: function (data) {
+               $('.page-navigation').remove();
+
                 $("table tbody tr").remove();
                 $("table").removeAttr("hidden");
                 var html = "<tr>";
